@@ -71,7 +71,6 @@
   height: 36px;
   line-height: 18px;
   padding: 9px 0;
-  text-align: center;
   bottom: 0;
   left: 0;
   right: 0;
@@ -79,19 +78,21 @@
   a {
     color: white;
     text-decoration: none;
-    border-right: 1px solid #385261;
     height: 18px;
     line-height: 18px;
     font-size: 13px;
     padding: 0 12px;
     vertical-align: top;
+    border: none;
 
     &:first-child {
-      padding-left: 0;
+      padding-left: 10px;
+      border-right: 1px solid #385261;
     }
+
     &:last-child {
-      padding-right: 0;
-      border: none;
+      padding-left: 100px;
+      padding-right: 10px;
     }
   }
 
@@ -323,7 +324,7 @@ a.subitem {
   }
 }
 
-.more {
+.footer_menu {
   svg {
     fill: #0C5582;
     transition: fill 0.2s ease-in;
@@ -339,9 +340,8 @@ a.subitem {
 .popup {
   position: absolute;
   bottom: 4px;
-  left: -113px;
   background: white;
-  width: 130px;
+  width: 160px;
   border-radius: 5px;
 
   &:after {
@@ -361,7 +361,8 @@ a.subitem {
     text-align: right;
     border-bottom: 1px solid #e0e0ea;
     color: $mainTextColor;
-    padding-right: 8px;
+    padding-right: 6px;
+
     &:hover{
       background-color: darken(white,4%)
     }

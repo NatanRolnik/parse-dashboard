@@ -10,50 +10,91 @@ import Popover  from 'components/Popover/Popover.react';
 import Position from 'lib/Position';
 import React    from 'react';
 import styles   from 'components/Sidebar/Sidebar.scss';
-
-let host = location.host.split('.');
-let mountPath = window.PARSE_DASHBOARD_PATH;
+import ReactDOM from 'react-dom'
 
 export default class FooterMenu extends React.Component {
-  constructor() {
+  constructor(props) {
     super();
 
+    this.clickOrigin = null;
     this.state = {
       show: false,
       position: null,
+      arrowAdjustFactor: props.arrowAdjustFactor,
+      title: props.title,
+      items: props.items,
     };
   }
 
   toggle() {
-    let pos = Position.inWindow(this.refs.more);
-    pos.x += 24;
+    if (!this.state.position) {
+      let pos = Position.inWindow(this.clickOrigin);
+      pos.x += this.state.arrowAdjustFactor;
+      this.setState({
+        position: pos,
+      });
+    }
+
     this.setState({
       show: true,
-      position: pos
     });
   }
 
   render() {
-    let content = null;
-    if (this.state.show) {
-      content = (
+    let menuContent = null;
+    let menuTitle = this.state.title;
+
+    if (!menuTitle) {
+      menuTitle = (
+        <Icon height={24} width={24} name='ellipses' />
+      );
+    }
+
+    if (this.state.show && this.state.items) {
+      menuContent = (
         <Popover
           fixed={true}
           position={this.state.position}
           onExternalClick={() => this.setState({ show: false })}>
           <div className={styles.popup}>
-            <a href={`${mountPath}logout`}>Log Out <span className={styles.emoji}>👋</span></a>
-            <a target='_blank' href='https://www.parse.com/docs/server/guide'>Server Guide <span className={styles.emoji}>📚</span></a>
-            <a target='_blank' href='https://www.parse.com/help'>Help <span className={styles.emoji}>💊</span></a>
+            { this.state.items.map(this.rowItem) }
           </div>
         </Popover>
       );
     }
     return (
-      <a onClick={this.toggle.bind(this)} ref='more' className={styles.more}>
-        <Icon height={24} width={24} name='ellipses' />
-        {content}
+      <a onClick={this.toggle.bind(this)} ref={(a) => {
+        this.clickOrigin = a;
+      }} className={styles.footer_menu}>
+        {menuTitle}
+        {menuContent}
       </a>
     );
+  }
+
+  rowItem(item) {
+    let emoji = null;
+    let icon = null;
+    let target = item.sameWindow ? '_self' : '_blank';
+
+    if (item.emoji) {
+      emoji = (<span className={styles.emoji}>{item.emoji}</span>)
+    }
+    else if (item.icon) {
+      let fill = item.icon.fill ? item.icon.fill : '#000000';
+      icon = (
+        <Icon height={18} width={18} fill={fill} name={item.icon.name} />
+      )
+    }
+
+    return (
+      <a key={item.title}
+        href={item.link}
+        target={target}>
+        {item.title}
+        {emoji}
+        {icon}
+      </a>
+    )
   }
 }

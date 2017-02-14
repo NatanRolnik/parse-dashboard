@@ -14,6 +14,8 @@ import SidebarSection from 'components/Sidebar/SidebarSection.react';
 import SidebarSubItem from 'components/Sidebar/SidebarSubItem.react';
 import styles         from 'components/Sidebar/Sidebar.scss';
 
+let mountPath = window.PARSE_DASHBOARD_PATH;
+
 const Sidebar = ({
   prefix,
   action,
@@ -77,10 +79,26 @@ const Sidebar = ({
       })}
     </div>
     <div className={styles.footer}>
-      <a target='_blank' href='https://parseplatform.github.io'>Open Source</a>
-      <a target='_blank' href='https://www.parse.com/docs'>Docs</a>
-      <a target='_blank' href='https://parseplatform.github.io'>Downloads</a>
-      <FooterMenu />
+      <FooterMenu title={'Open Source'}/>
+      <FooterMenu
+        title={'Docs'}
+        items={[
+          {title: 'Cloud Code', icon: {name: 'cloudcode', fill: '#5A79AD'}, link: 'http://parseplatform.github.io/docs/ios/guide/'},
+          {title: 'iOS', icon: {name: 'apple', fill: '#485D6A'}, link: 'http://parseplatform.github.io/docs/ios/guide/'},
+          {title: 'Android', icon: {name: 'android', fill: '#48A966'}, link: 'http://parseplatform.github.io/android/guide/'},
+          {title: 'JavaScript', icon: {name: 'javascript', fill: '#E69733'}, link: 'http://parseplatform.github.io/docs/js/guide/'},
+          {title: 'REST API', icon: {name: 'rest', fill: '#D36833'}, link: 'http://parseplatform.github.io/docs/rest/guide/'},
+          {title: 'Other SDKs', icon: {name: 'ellipses', fill: '#114470'}, link: 'http://parseplatform.github.io/docs/'},
+      ]}>
+      </FooterMenu>
+
+      <FooterMenu arrowAdjustFactor={-30} items={[
+          {title: 'Log Out', emoji: '👋', sameWindow: true, link: `${mountPath}logout`},
+          {title: 'Server Wiki', emoji: '📚', link: 'https://github.com/ParsePlatform/parse-server/wiki'},
+          {title: 'Questions on SO', icon: {name: 'overflow', fill: '#DF6F2F'}, link: 'http://stackoverflow.com/questions/tagged/parse-server'},
+          {title: 'Server Maintenance', icon: {name: 'overflow', fill: '#DF6F2F'}, link: 'http://serverfault.com/tags/parse'},
+        ]}>
+      </FooterMenu>
     </div>
   </div>
 }
